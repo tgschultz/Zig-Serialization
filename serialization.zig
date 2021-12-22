@@ -213,7 +213,7 @@ pub fn Deserializer(comptime endian: builtin.Endian, comptime packing: Packing, 
                         //we avoid duplicate iteration over the enum tags
                         // by getting the int directly and casting it without
                         // safety. If it is bad, it will be caught anyway.
-                        const TagInt = std.meta.TagType(TagType);
+                        const TagInt = std.meta.Tag(TagType);
                         const tag = try self.deserializeInt(TagInt);
 
                         inline for (info.fields) |field_info| {
@@ -243,7 +243,7 @@ pub fn Deserializer(comptime endian: builtin.Endian, comptime packing: Packing, 
                     try self.deserializeInto(val_ptr);
                 },
                 .Enum => {
-                    var value = try self.deserializeInt(std.meta.TagType(C));
+                    var value = try self.deserializeInt(std.meta.Tag(C));
                     ptr.* = try meta.intToEnum(C, value);
                 },
                 else => {
